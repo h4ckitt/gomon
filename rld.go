@@ -157,7 +157,7 @@ func main() {
 		}
 
 		info(path)
-		if err := watcher.Add(check.Name()); err != nil {
+		if err := watcher.Add(path); err != nil {
 			log.Fatal(err)
 		}
 		cmd = fmt.Sprintf("%s %s", path, strings.Join(args, " "))
