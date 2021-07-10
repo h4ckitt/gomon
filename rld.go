@@ -3,6 +3,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io/fs"
 	"log"
@@ -22,9 +23,13 @@ var (
 	process *os.Process
 )
 
-var usage = `Usage: rld <file>
+var usage = `Usage: rld <file|directory> <args>
 Options:
-  <file> - The filepath to watch for changes
+  file - The filepath to watch for changes
+  directory - The Project Directory To Watch For Changes
+  args - The Arguments For The File / Project To Be Watched For Changes
+
+  If No Option Is Received, It Will Treat The Current Directory As A Project Root And Try To Run It.
 `
 
 func main() {
@@ -36,6 +41,13 @@ func main() {
 		args  []string
 		cmd   string
 	)
+
+	helptext := flag.Bool("h", false, "Help Text")
+	flag.Parse()
+
+	if *helptext {
+		helpText()
+	}
 
 	if len(os.Args) < 2 {
 		path = "." //If There's No Arguments Passed, Assume User Wants To Run In Directory Mode On The Current Directory
@@ -253,10 +265,9 @@ func runCmd(file string) {
 }
 
 //Displays Usage Text
-func errUsage() {
-	fmt.Fprintf(os.Stderr, usage)
-	fmt.Fprintf(os.Stderr, "\n\n")
-	os.Exit(1)
+func helpText() {
+	fmt.Println(usage)
+	os.Exit(0)
 }
 
 //Kills Specified Process
