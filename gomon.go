@@ -1,4 +1,4 @@
-// rld is a tool that watches a go program and automatically restart the
+// gomon is a tool that watches a go program and automatically restart the
 // application when a file change is detected.
 package main
 
@@ -23,7 +23,7 @@ var (
 	process *os.Process
 )
 
-var usage = `Usage: rld <file|directory> <args>
+var usage = `Usage: gomon <file|directory> <args>
 Options:
   file - The filepath to watch for changes
   directory - The Project Directory To Watch For Changes
@@ -101,8 +101,8 @@ func main() {
 						timer.Reset(500 * time.Millisecond) //Reset The Timer So We Have Enough Time To Catch Another Write Event
 						continue
 					}
-					fmt.Println("\n==============\n[rld] detected change")
-					fmt.Println("[rld] waiting for 500ms to verify file closure")
+					fmt.Println("\n==============\n[gomon] detected change")
+					fmt.Println("[gomon] waiting for 500ms to verify file closure")
 					//sets waiting to true so we can wait subsequent write events before restarting the program
 					waiting = true
 					timer.Reset(500 * time.Millisecond)
@@ -111,7 +111,7 @@ func main() {
 			//This Channel Gets Written To Once The Timer Set Above Expires
 			case <-timer.C:
 				if waiting {
-					fmt.Println("[rld] no further change detected, restarting...")
+					fmt.Println("[gomon] no further change detected, restarting...")
 					killPid(process)
 					go runCmd(cmd)
 					waiting = false
@@ -138,7 +138,7 @@ func main() {
 		for {
 			fmt.Scanln(&input)
 			if input == "rst" {
-				fmt.Println("[rld] manual restart requested, restarting...")
+				fmt.Println("[gomon] manual restart requested, restarting...")
 				killPid(process)
 				go runCmd(cmd)
 			}
@@ -146,11 +146,11 @@ func main() {
 	}()
 
 	/* Remember The Check Variable That We Created Above?
-	Here, It Is Used To Ascertain Whether A File Or A Directory Has Been Passed To rld
+	Here, It Is Used To Ascertain Whether A File Or A Directory Has Been Passed To gomon
 	*/
 	if check.IsDir() {
-		fmt.Println("[rld] Directory detected")
-		//If The Directory Given Is Not The Current Directory, Change rld's Working Directory To The Directory Specified
+		fmt.Println("[gomon] Directory detected")
+		//If The Directory Given Is Not The Current Directory, Change gomon's Working Directory To The Directory Specified
 		//Then Change The 'path' Variable To '.' (This Is So We Can Do `go run .`)
 		if path != "." {
 			err := os.Chdir(path)
@@ -175,7 +175,7 @@ func main() {
 			//If The Current Element Selected Is A Directory, Check If It Is Part Of The Directories We're To Skip Checks For
 			if fileinfo.IsDir() {
 				if contains(filesToSkip, fileinfo.Name()) {
-					fmt.Printf("[rld] Skipping Dir %v\n", fileinfo.Name())
+					fmt.Printf("[gomon] Skipping Dir %v\n", fileinfo.Name())
 					return filepath.SkipDir
 				}
 
@@ -197,11 +197,11 @@ func main() {
 	} else {
 
 		//Here We Are In The File Department
-		fmt.Println("[rld] File detected")
+		fmt.Println("[gomon] File detected")
 
-		//If The File That Was Passed As An Argument To rld Is Not A Go File (Bad User, Bad User), Exit.
+		//If The File That Was Passed As An Argument To gomon Is Not A Go File (Bad User, Bad User), Exit.
 		if filepath.Ext(path) != ".go" {
-			fmt.Println("[rld] Cannot Run Non Golang File")
+			fmt.Println("[gomon] Cannot Run Non Golang File")
 			return
 		}
 
@@ -233,7 +233,7 @@ func main() {
 
 //Prints The Files Being Watched For Changes
 func info(f string) {
-	fmt.Println("[rld] watching changes for", f)
+	fmt.Println("[gomon] watching changes for", f)
 }
 
 /*
@@ -250,7 +250,7 @@ cmd := exec.Command("go", "run", "count.go", "--values", "1", "2", "3", "4")
 I Hope I've Been Able To Demystify This Cryptic Looking Function
 */
 func runCmd(file string) {
-	fmt.Println("[rld] exec: go run", file)
+	fmt.Println("[gomon] exec: go run", file)
 	args := []string{"run"}                      //Creates A Slice With An Initial Element "run"
 	args = append(args, strings.Fields(file)...) //Appends The Slice With Values Gotten From Splitting The 'file' Argument
 	cmd := exec.Command("go", args...)
@@ -272,7 +272,7 @@ func helpText() {
 
 //Kills Specified Process
 func killPid(process *os.Process) {
-	fmt.Printf("[rld] Killing previous process: %d\n", process.Pid)
+	fmt.Printf("[gomon] Killing previous process: %d\n", process.Pid)
 	if process != nil {
 		syscall.Kill(-process.Pid, syscall.SIGKILL)
 	}
