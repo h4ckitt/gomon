@@ -48,10 +48,13 @@ If `gomon` is called without any arguments, it assumes the current directory is 
 - [ ] Windows
 
 ## ToDo
+Contributions are very much welcome, anyone can create a PR with a fix for any of the following issues:
+
 - [x] Kill Previous Running Processes Before Starting A New One
 - [ ] Make Killing Of Previous Process Work In Windows
 - [ ] Let Users Specify Which Files To Ignore In Project Mode
 - [ ] Watch For Changes In Project Directory (File Creation/Deletion/Rename)
+- [ ] Fix Bugs That Stealthily Slipped From Me But Not You
 
 ## Author
 - [@h4ckit](https://twitter.com/h4ckit)
