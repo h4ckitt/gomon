@@ -40,7 +40,7 @@ $ gomon cmd/main.go --arg1 --arg2 1 2 3 4
 $ gomon path/to/project/dir
 ```
 
-If `gomon` is called without any arguments, it assumes the current directory is a project directory.
+If `gomon` is called without arguments, it assumes the current directory is a project directory.
 
 ## Operating Systems
 - [x] Linux
