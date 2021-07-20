@@ -1,4 +1,4 @@
-module codehakase/rld
+module yoruba-codigy/gomon
 
 go 1.14
 
