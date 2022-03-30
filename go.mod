@@ -1,4 +1,4 @@
-module yoruba-codigy/gomon
+module github.com/yoruba-codigy/gomon
 
 go 1.14
 
