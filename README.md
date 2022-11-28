@@ -6,7 +6,7 @@ gomon was originally a fork of [rld](https://github.com/codehakase/rld)
 ## Installation
 Clone the git repository and build:
 ```shell
-$ git clone https://github.com/yoruba-codigy/gomon
+$ git clone https://github.com/h4ckitt/gomon
 $ cd gomon
 $ make release
 ```
@@ -14,7 +14,7 @@ $ make release
 Or install go binary:
 ```shell
 $ cd gomon
-$ go install github.com/yoruba-codigy/gomon
+$ go install github.com/h4ckitt/gomon@latest
 ```
 
 ## Usage
